@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiTools - Your All-in-One Utility Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0f7e0 0%, #c8e6c9 100%); /* Light green gradient */
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #2B2D42;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .search-container {
+            max-width: 500px;
+            margin: 15px auto;
+            padding: 0 15px;
+        }
+        
+        #search-tools {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 2px;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #444;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .tool-card {
+            background-color: white;
+            border-radius: 2px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: #2B2D42;
+        }
+        
+        .tool-card h3 {
+            margin-bottom: 10px;
+            color: #2B2D42;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tool-card h3 i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .tool-card p {
+            color: #666;
+            flex-grow: 1;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .tool-btn {
+            background-color: #2B2D42;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+        
+        .tool-btn:hover {
+            background-color: #1a1b2b;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 2px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+            background: none;
+            border: none;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            font-size: 1rem;
+        }
+        
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-input {
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            display: none;
+            background-color: #2B2D42;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        .download-btn:hover {
+            background-color: #1a1b2b;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 2px;
+            border: 1px solid #eee;
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2B2D42;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-btn {
+            background-color: white;
+            border: 1px solid #2B2D42;
+            padding: 8px 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: #2B2D42;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 30px auto;
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .intro p {
+                font-size: 1rem;
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2B2D42;
+            border-radius: 5%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .tool-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2B2D42;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MultiTools</h1>
+        <p>Your all-in-one utility platform</p>
+        <div class="search-container">
+            <input type="text" id="search-tools" placeholder="Search for tools...">
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="intro">
+            <p>A lightweight collection of everyday utilities to convert, compress, and format your files in one place.</p>
+        </div>
+        
+        <div class="category-filter" id="category-filter">
+            <button class="category-btn active" data-category="all">All Tools</button>
+            <button class="category-btn" data-category="pdf">PDF Tools</button>
+            <button class="category-btn" data-category="image">Image Tools</button>
+            <button class="category-btn" data-category="text">Text Tools</button>
+            <button class="category-btn" data-category="converter">Converters</button>
+            <button class="category-btn" data-category="generator">Generators</button>
+        </div>
+        
+        <div class="tools-grid" id="tools-container">
+            <!-- Tools will be dynamically generated here -->
+        </div>
+    </div>
+    
+    <div class="modal" id="tool-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Tool Name</h2>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Tool content will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 MultiTools. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Define all tools with their details
+        const tools = [
+            { id: 1, name: "PDF Compressor", description: "Reduce the size of your PDF files without losing quality.", category: "pdf", icon: "file-pdf" },
+            { id: 2, name: "PDF Merger", description: "Combine multiple PDF files into a single document.", category: "pdf", icon: "file-pdf" },
+            { id: 3, name: "Word to PDF", description: "Convert Microsoft Word documents to PDF format.", category: "pdf", icon: "file-word" },
+            { id: 4, name: "PDF to Word", description: "Convert PDF files to editable Word documents.", category: "pdf", icon: "file-word" },
+            { id: 5, name: "PDF to TXT", description: "Extract text content from PDF files.", category: "pdf", icon: "file-alt" },
+            { id: 6, name: "Word to TXT", description: "Convert Word documents to plain text files.", category: "converter", icon: "file-alt" },
+            { id: 7, name: "Excel to PDF", description: "Convert Excel spreadsheets to PDF format.", category: "pdf", icon: "file-excel" },
+            { id: 8, name: "PDF to Excel", description: "Convert PDF tables to Excel spreadsheets.", category: "pdf", icon: "file-excel" },
+            { id: 9, name: "PPT to PDF", description: "Convert PowerPoint presentations to PDF format.", category: "pdf", icon: "file-powerpoint" },
+            { id: 10, name: "PDF to PPT", description: "Convert PDF files to PowerPoint presentations.", category: "pdf", icon: "file-powerpoint" },
+            { id: 11, name: "PDF Splitter", description: "Split a PDF into multiple smaller files.", category: "pdf", icon: "cut" },
+            { id: 12, name: "PDF Unlocker", description: "Remove password protection from PDF files.", category: "pdf", icon: "unlock" },
+            { id: 13, name: "PDF Protector", description: "Add password protection to your PDF files.", category: "pdf", icon: "lock" },
+            { id: 14, name: "Image Compressor", description: "Compress images without significant quality loss.", category: "image", icon: "compress" },
+            { id: 15, name: "Image Converter", description: "Convert between different image formats (PNG, JPG, WebP, etc.).", category: "image", icon: "exchange-alt" },
+            { id: 16, name: "Image Resizer", description: "Resize your images to specific dimensions.", category: "image", icon: "expand" },
+            { id: 17, name: "Image Cropper", description: "Crop your images to remove unwanted areas.", category: "image", icon: "crop" },
+            { id: 18, name: "Image to PDF", description: "Convert images to PDF documents.", category: "image", icon: "file-pdf" },
+            { id: 19, name: "PDF to Image", description: "Convert PDF pages to image files.", category: "pdf", icon: "file-image" },
+            { id: 20, name: "Audio Converter", description: "Convert between different audio formats (MP3, WAV, etc.).", category: "converter", icon: "music" },
+            { id: 21, name: "Video Converter", description: "Convert between different video formats (MP4, AVI, MKV, etc.).", category: "converter", icon: "video" },
+            { id: 22, name: "Video to Audio", description: "Extract audio from video files.", category: "converter", icon: "file-audio" },
+            { id: 23, name: "Text to Speech", description: "Convert written text to spoken audio.", category: "text", icon: "volume-up" },
+            { id: 24, name: "Speech to Text", description: "Transcribe audio to text.", category: "text", icon: "microphone" },
+            { id: 25, name: "QR Code Generator", description: "Create QR codes from URLs or text.", category: "generator", icon: "qrcode" },
+            { id: 26, name: "QR Code Scanner", description: "Scan QR codes from images.", category: "converter", icon: "camera" },
+            { id: 27, name: "Barcode Generator", description: "Generate barcodes from numbers or text.", category: "generator", icon: "barcode" },
+            { id: 28, name: "JSON Formatter", description: "Format and validate JSON data.", category: "text", icon: "code" },
+            { id: 29, name: "XML Formatter", description: "Format and validate XML data.", category: "text", icon: "code" },
+            { id: 30, name: "HTML Formatter", description: "Format and beautify HTML code.", category: "text", icon: "html5" },
+            { id: 31, name: "Base64 Encoder/Decoder", description: "Encode and decode Base64 strings.", category: "converter", icon: "key" },
+            { id: 32, name: "URL Encoder/Decoder", description: "Encode and decode URL strings.", category: "converter", icon: "link" },
+            { id: 33, name: "Password Generator", description: "Generate strong, secure passwords.", category: "generator", icon: "key" },
+            { id: 34, name: "Word Counter", description: "Count words in your text.", category: "text", icon: "font" },
+            { id: 35, name: "Character Counter", description: "Count characters in your text.", category: "text", icon: "text-width" },
+            { id: 36, name: "Case Converter", description: "Convert text between uppercase, lowercase, and title case.", category: "text", icon: "text-height" },
+            { id: 37, name: "Remove Extra Spaces", description: "Remove unnecessary spaces from text.", category: "text", icon: "i-cursor" },
+            { id: 38, name: "Plagiarism Checker", description: "Check text for potential plagiarism (basic comparison).", category: "text", icon: "search" },
+            { id: 39, name: "Grammar Checker", description: "Check text for grammar errors (basic level).", category: "text", icon: "spell-check" },
+            { id: 40, name: "Text Reverser", description: "Reverse text character order.", category: "text", icon: "exchange-alt" },
+            { id: 41, name: "Unit Converter", description: "Convert between different units of measurement.", category: "converter", icon: "balance-scale" },
+            { id: 42, name: "Currency Converter", description: "Convert between world currencies.", category: "converter", icon: "dollar-sign" },
+            { id: 43, name: "Calculator", description: "Basic and scientific calculator functions.", category: "generator", icon: "calculator" },
+            { id: 44, name: "Age Calculator", description: "Calculate age from birth date.", category: "generator", icon: "birthday-cake" },
+            { id: 45, name: "BMI Calculator", description: "Calculate Body Mass Index.", category: "generator", icon: "weight" },
+            { id: 46, name: "Percentage Calculator", description: "Calculate percentages.", category: "generator", icon: "percent" },
+            { id: 47, name: "Loan/EMI Calculator", description: "Calculate loan payments and EMIs.", category: "generator", icon: "chart-line" },
+            { id: 48, name: "Color Picker", description: "Select and identify colors.", category: "generator", icon: "eye-dropper" },
+            { id: 49, name: "Gradient Generator", description: "Create CSS gradients.", category: "generator", icon: "palette" },
+            { id: 50, name: "Lorem Ipsum Generator", description: "Generate placeholder text.", category: "generator", icon: "paragraph" }
+        ];
+
+        // DOM elements
+        const toolsContainer = document.getElementById('tools-container');
+        const toolModal = document.getElementById('tool-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const searchInput = document.getElementById('search-tools');
+        const categoryFilter = document.getElementById('category-filter');
+
+        // Generate tool cards
+        function renderTools(filteredTools = tools) {
+            toolsContainer.innerHTML = '';
+            
+            filteredTools.forEach(tool => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'tool-card';
+                toolCard.setAttribute('data-category', tool.category);
+                toolCard.innerHTML = `
+                    <div class="tool-icon">
+                        <i class="fas fa-${tool.icon}"></i>
+                    </div>
+                    <h3>${tool.name}</h3>
+                    <p>${tool.description}</p>
+                    <button class="tool-btn" data-id="${tool.id}">Use Tool</button>
+                `;
+                toolsContainer.appendChild(toolCard);
+            });
+            
+            // Add event listeners to tool buttons
+            document.querySelectorAll('.tool-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const toolId = parseInt(this.getAttribute('data-id'));
+                    openToolModal(toolId);
+                });
+            });
+        }
+
+        // Initial render
+        renderTools();
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredTools = tools.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) || 
+                tool.description.toLowerCase().includes(searchTerm)
+            );
+            renderTools(filteredTools);
+        });
+
+        // Category filter functionality
+        categoryFilter.addEventListener('click', function(e) {
+            if (e.target.classList.contains('category-btn')) {
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                const category = e.target.getAttribute('data-category');
+                
+                if (category === 'all') {
+                    renderTools();
+                } else {
+                    const filteredTools = tools.filter(tool => tool.category === category);
+                    renderTools(filteredTools);
+                }
+            }
+        });
+
+        // Close modal event
+        closeModal.addEventListener('click', function() {
+            toolModal.style.display = 'none';
+            // stop any active speech recognition or synthesis
+            if (window.recognition && window.recognition.abort) {
+                try { window.recognition.abort(); } catch(e){}
+            }
+            try { speechSynthesis.cancel(); } catch(e){}
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === toolModal) {
+                toolModal.style.display = 'none';
+                if (window.recognition && window.recognition.abort) {
+                    try { window.recognition.abort(); } catch(e){}
+                }
+            }
+        });
+
+        // Utility helpers
+        function showLoading(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'block';
+        }
+        function hideLoading(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        }
+        function downloadDataURL(dataURL, filename) {
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch(e){}
+                document.body.removeChild(ta);
+                return Promise.resolve();
+            }
+        }
+
+        // Function to open tool modal with appropriate content
+        function openToolModal(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            modalTitle.textContent = tool.name;
+            
+            // Clear previous content
+            modalBody.innerHTML = '';
+            
+            // Add content based on tool ID
+            switch(toolId) {
+                case 1: // PDF Compressor
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-compress">Upload PDF File:</label>
+                            <input type="file" id="pdf-compress" accept=".pdf">
+                        </div>
+                        <div class="input-group">
+                            <label for="compression-level">Compression Level:</label>
+                            <select id="compression-level">
+                                <option value="low">Low Compression (Better Quality)</option>
+                                <option value="medium" selected>Medium Compression</option>
+                                <option value="high">High Compression (Smaller Size)</option>
+                            </select>
+                        </div>
+                        <button class="tool-btn" id="compress-btn">Compress PDF</button>
+                        <div class="loading" id="compress-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Compressing your PDF...</p>
+                        </div>
+                        <button class="download-btn" id="download-compressed">Download Compressed PDF</button>
+                        <p style="margin-top:10px;color:#666;font-size:0.9rem;">Note: This demo simulates compression. For real compression, configure a server endpoint (example fetch snippet provided after clicking "Compress PDF").</p>
+                    `;
+                    break;
+
+                case 2: // PDF Merger
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-merge-files">Upload PDF files (multiple):</label>
+                            <input type="file" id="pdf-merge-files" accept=".pdf" multiple>
+                        </div>
+                        <button class="tool-btn" id="merge-pdfs-btn">Merge PDFs</button>
+                        <div class="loading" id="merge-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Merging PDFs...</p>
+                        </div>
+                        <button class="download-btn" id="download-merged">Download Merged PDF</button>
+                        <div style="margin-top:10px;color:#666;font-size:0.9rem;">
+                          For accurate merges (preserving bookmarks, metadata) use a backend. Click "Merge PDFs" to see a sample fetch snippet to call a server API.
+                        </div>
+                    `;
+                    break;
+
+                case 3: // Word to PDF
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="word-to-pdf-file">Upload Word (.docx) file:</label>
+                            <input type="file" id="word-to-pdf-file" accept=".doc,.docx">
+                        </div>
+                        <button class="tool-btn" id="word-to-pdf-btn">Convert to PDF (Server required)</button>
+                        <div class="result-container" id="word-to-pdf-result" style="display:none;">
+                            <p>Conversion request prepared. This operation requires a server with LibreOffice or similar. Click below to copy a sample backend fetch.</p>
+                            <button class="tool-btn" id="copy-word-pdf-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 4: // PDF to Word
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-to-word-file">Upload PDF file:</label>
+                            <input type="file" id="pdf-to-word-file" accept=".pdf">
+                        </div>
+                        <button class="tool-btn" id="pdf-to-word-btn">Convert to Word (Server required)</button>
+                        <div class="result-container" id="pdf-to-word-result" style="display:none;">
+                            <p>This requires server-side conversion (e.g., LibreOffice or commercial APIs). Click to copy sample fetch snippet.</p>
+                            <button class="tool-btn" id="copy-pdf-word-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 5: // PDF to TXT
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-to-txt-file">Upload PDF file:</label>
+                            <input type="file" id="pdf-to-txt-file" accept=".pdf">
+                        </div>
+                        <button class="tool-btn" id="pdf-to-txt-btn">Extract Text</button>
+                        <div class="loading" id="pdf-to-txt-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Extracting text from PDF...</p>
+                        </div>
+                        <div class="result-container" id="pdf-to-txt-result">
+                            <h3>Extracted Text</h3>
+                            <textarea id="pdf-extracted-text" style="width:100%;min-height:200px;"></textarea>
+                            <button class="tool-btn" id="copy-pdf-text">Copy Text</button>
+                        </div>
+                        <p style="margin-top:10px;color:#666;font-size:0.9rem;">Note: Client-side PDF text extraction is limited without pdf.js. This demo tries a basic text extraction via PDF.js if available — otherwise it suggests a server approach.</p>
+                    `;
+                    break;
+
+                case 6: // Word to TXT
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="word-to-txt-file">Upload Word (.docx) file:</label>
+                            <input type="file" id="word-to-txt-file" accept=".doc,.docx">
+                        </div>
+                        <button class="tool-btn" id="word-to-txt-btn">Convert to TXT (Client-side if docx)</button>
+                        <div class="result-container" id="word-to-txt-result" style="display:none;">
+                            <h3>Extracted Text</h3>
+                            <textarea id="word-to-txt-output" style="width:100%;min-height:200px;"></textarea>
+                            <button class="tool-btn" id="copy-word-text">Copy Text</button>
+                        </div>
+                        <p style="color:#666;font-size:0.9rem;">This uses simple docx XML read (works with .docx). For .doc files, server required.</p>
+                    `;
+                    break;
+
+                case 7: // Excel to PDF
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="excel-to-pdf-file">Upload Excel (.xlsx) file:</label>
+                            <input type="file" id="excel-to-pdf-file" accept=".xls,.xlsx">
+                        </div>
+                        <button class="tool-btn" id="excel-to-pdf-btn">Convert (Server required)</button>
+                        <div style="margin-top:10px;color:#666;font-size:0.9rem;">
+                          Excel → PDF conversion usually requires server-side libraries (LibreOffice / Excel Automation). Click to copy a sample API call.
+                        </div>
+                        <div class="result-container" id="excel-api-result" style="display:none;">
+                          <button class="tool-btn" id="copy-excel-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 8: // PDF to Excel
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-to-excel-file">Upload PDF file (with tables):</label>
+                            <input type="file" id="pdf-to-excel-file" accept=".pdf">
+                        </div>
+                        <button class="tool-btn" id="pdf-to-excel-btn">Convert (Server required / specialized)</button>
+                        <p style="margin-top:10px;color:#666;font-size:0.9rem;">Table extraction requires advanced PDF parsing (server or 3rd-party API). Click to copy sample API call.</p>
+                        <div class="result-container" id="pdf-to-excel-result" style="display:none;">
+                          <button class="tool-btn" id="copy-pdf-excel-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 9: // PPT to PDF
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="ppt-to-pdf-file">Upload PPTX file:</label>
+                            <input type="file" id="ppt-to-pdf-file" accept=".ppt,.pptx">
+                        </div>
+                        <button class="tool-btn" id="ppt-to-pdf-btn">Convert (Server required)</button>
+                        <div style="margin-top:10px;color:#666;font-size:0.9rem;">PPT → PDF needs server conversion. Click to copy sample API call.</div>
+                    `;
+                    break;
+
+                case 10: // PDF to PPT
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-to-ppt-file">Upload PDF file:</label>
+                            <input type="file" id="pdf-to-ppt-file" accept=".pdf">
+                        </div>
+                        <button class="tool-btn" id="pdf-to-ppt-btn">Convert (Server required)</button>
+                        <div style="margin-top:10px;color:#666;font-size:0.9rem;">PDF→PPT needs server/3rd-party. Click to copy sample API call.</div>
+                    `;
+                    break;
+
+                case 11: // PDF Splitter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-split-file">Upload PDF file:</label>
+                            <input type="file" id="pdf-split-file" accept=".pdf">
+                        </div>
+                        <div class="input-group">
+                            <label for="split-range">Pages to extract (e.g., 1-3,5):</label>
+                            <input id="split-range" placeholder="1-3">
+                        </div>
+                        <button class="tool-btn" id="pdf-split-btn">Split PDF (Server recommended)</button>
+                        <div class="result-container" id="pdf-split-result" style="display:none;">
+                            <p>Splitting prepared. For accurate output, use server. Click copy for sample API request.</p>
+                            <button class="tool-btn" id="copy-pdf-split-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 12: // PDF Unlocker
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-unlock-file">Upload protected PDF:</label>
+                            <input type="file" id="pdf-unlock-file" accept=".pdf">
+                        </div>
+                        <div class="input-group">
+                            <label for="pdf-password">Password (if known):</label>
+                            <input id="pdf-password" placeholder="password (optional)">
+                        </div>
+                        <button class="tool-btn" id="pdf-unlock-btn">Unlock (Server required)</button>
+                        <p style="margin-top:10px;color:#666;font-size:0.9rem;">Unlocking protected PDFs without password can be illegal; use only on your own files.</p>
+                    `;
+                    break;
+
+                case 13: // PDF Protector
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-protect-file">Upload PDF file:</label>
+                            <input type="file" id="pdf-protect-file" accept=".pdf">
+                        </div>
+                        <div class="input-group">
+                            <label for="protect-password">Set Password:</label>
+                            <input id="protect-password" placeholder="Enter password">
+                        </div>
+                        <button class="tool-btn" id="pdf-protect-btn">Add Password (Server or library)</button>
+                        <div class="result-container" id="pdf-protect-result" style="display:none;">
+                          <p>Sample server fetch snippet prepared. Use server-side PDF library to add encryption.</p>
+                          <button class="tool-btn" id="copy-protect-api">Copy Sample API Call</button>
+                        </div>
+                    `;
+                    break;
+
+                case 14: // Image Compressor
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="image-compress">Upload Image:</label>
+                            <input type="file" id="image-compress" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="image-quality">Image Quality:</label>
+                            <input type="range" id="image-quality" min="1" max="100" value="80">
+                            <span id="quality-value">80%</span>
+                        </div>
+                        <div id="image-preview" style="margin: 15px 0; text-align: center;"></div>
+                        <button class="tool-btn" id="compress-image-btn">Compress Image</button>
+                        <div class="loading" id="image-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Compressing your image...</p>
+                        </div>
+                        <button class="download-btn" id="download-compressed-image">Download Compressed Image</button>
+                    `;
+                    break;
+
+                case 15: // Image Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="image-convert-file">Upload Image:</label>
+                            <input type="file" id="image-convert-file" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="convert-format">Convert to:</label>
+                            <select id="convert-format">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <div id="image-convert-preview" style="margin:10px 0;text-align:center;"></div>
+                        <button class="tool-btn" id="convert-image-btn">Convert</button>
+                        <button class="download-btn" id="download-converted-image">Download Converted Image</button>
+                        <p style="color:#666;margin-top:8px;">Conversion uses canvas — high-resolution images may be downscaled depending on browser limits.</p>
+                    `;
+                    break;
+
+                case 16: // Image Resizer
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="image-resize-file">Upload Image:</label>
+                            <input type="file" id="image-resize-file" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="resize-width">Width (px):</label>
+                            <input id="resize-width" type="number" placeholder="e.g., 800">
+                        </div>
+                        <div class="input-group">
+                            <label for="resize-height">Height (px):</label>
+                            <input id="resize-height" type="number" placeholder="e.g., 600">
+                        </div>
+                        <div id="image-resize-preview" style="margin:10px 0;text-align:center;"></div>
+                        <button class="tool-btn" id="resize-image-btn">Resize</button>
+                        <button class="download-btn" id="download-resized-image">Download Resized Image</button>
+                    `;
+                    break;
+
+                case 17: // Image Cropper
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="image-crop-file">Upload Image:</label>
+                            <input type="file" id="image-crop-file" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label>Crop (x, y, width, height in px):</label>
+                            <input id="crop-x" type="number" placeholder="x" style="width:23%;display:inline-block;">
+                            <input id="crop-y" type="number" placeholder="y" style="width:23%;display:inline-block;margin-left:4%;">
+                            <input id="crop-w" type="number" placeholder="width" style="width:23%;display:inline-block;margin-left:4%;">
+                            <input id="crop-h" type="number" placeholder="height" style="width:23%;display:inline-block;margin-left:4%;">
+                        </div>
+                        <div id="image-crop-preview" style="margin:10px 0;text-align:center;"></div>
+                        <button class="tool-btn" id="crop-image-btn">Crop</button>
+                        <button class="download-btn" id="download-cropped-image">Download Cropped Image</button>
+                        <p style="color:#666;margin-top:8px;">This cropper uses numeric inputs for simplicity. For interactive cropping, integrate a library (Cropper.js).</p>
+                    `;
+                    break;
+
+                case 18: // Image to PDF
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="image-to-pdf-file">Upload Image:</label>
+                            <input type="file" id="image-to-pdf-file" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="pdf-orientation">Orientation:</label>
+                            <select id="pdf-orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select>
+                        </div>
+                        <button class="tool-btn" id="image-to-pdf-btn">Create PDF</button>
+                        <div class="loading" id="image-to-pdf-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Generating PDF...</p>
+                        </div>
+                        <button class="download-btn" id="download-image-pdf">Download PDF</button>
+                        <p style="color:#666;margin-top:8px;">This will dynamically load jsPDF library to create the PDF in the browser.</p>
+                    `;
+                    break;
+
+                case 19: // PDF to Image
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="pdf-to-image-file">Upload PDF:</label>
+                            <input type="file" id="pdf-to-image-file" accept=".pdf">
+                        </div>
+                        <button class="tool-btn" id="pdf-to-image-btn">Convert (Server or pdf.js required)</button>
+                        <div style="margin-top:10px;color:#666;font-size:0.9rem;">PDF→Image conversion client-side requires pdf.js. For simplicity, use a server endpoint or integrate pdf.js.</div>
+                    `;
+                    break;
+
+                case 20: // Audio Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="audio-convert-file">Upload Audio:</label>
+                            <input type="file" id="audio-convert-file" accept="audio/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="audio-target">Convert to:</label>
+                            <select id="audio-target"><option value="mp3">MP3</option><option value="wav">WAV</option><option value="ogg">OGG</option></select>
+                        </div>
+                        <button class="tool-btn" id="audio-convert-btn">Convert (Server required)</button>
+                        <div style="margin-top:10px;color:#666;">Audio transcoding needs FFmpeg on server or client ffmpeg.wasm (heavy). Click to copy sample API snippet.</div>
+                        <div class="result-container" id="audio-api" style="display:none;"><button class="tool-btn" id="copy-audio-api">Copy Sample API Call</button></div>
+                    `;
+                    break;
+
+                case 21: // Video Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="video-convert-file">Upload Video:</label>
+                            <input type="file" id="video-convert-file" accept="video/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="video-target">Convert to:</label>
+                            <select id="video-target"><option value="mp4">MP4</option><option value="webm">WEBM</option><option value="avi">AVI</option></select>
+                        </div>
+                        <button class="tool-btn" id="video-convert-btn">Convert (Server required)</button>
+                        <div style="margin-top:10px;color:#666;">Video conversion requires FFmpeg (server or wasm). Click to copy sample API snippet.</div>
+                        <div class="result-container" id="video-api" style="display:none;"><button class="tool-btn" id="copy-video-api">Copy Sample API Call</button></div>
+                    `;
+                    break;
+
+                case 22: // Video to Audio
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="video-to-audio-file">Upload Video:</label>
+                            <input type="file" id="video-to-audio-file" accept="video/*">
+                        </div>
+                        <button class="tool-btn" id="video-to-audio-btn">Extract Audio (Server recommended)</button>
+                        <div style="margin-top:10px;color:#666;">Extraction uses FFmpeg. A server route example is provided on click.</div>
+                        <div class="result-container" id="v2a-api" style="display:none;"><button class="tool-btn" id="copy-v2a-api">Copy Sample API Call</button></div>
+                    `;
+                    break;
+
+                case 23: // Text to Speech
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="tts-text">Enter Text:</label>
+                            <textarea id="tts-text" placeholder="Type or paste text here..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="tts-voice">Select Voice:</label>
+                            <select id="tts-voice"></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="tts-rate">Speech Rate:</label>
+                            <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+                            <span id="rate-value">1</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="tts-pitch">Speech Pitch:</label>
+                            <input type="range" id="tts-pitch" min="0.5" max="2" step="0.1" value="1">
+                            <span id="pitch-value">1</span>
+                        </div>
+                        <button class="tool-btn" id="speak-btn">Speak</button>
+                        <button class="tool-btn" id="stop-btn" style="background-color: #e74c3c; margin-top: 10px;">Stop</button>
+                    `;
+                    break;
+
+                case 24: // Speech to Text
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label>Use microphone (live):</label>
+                            <div style="display:flex;gap:10px;">
+                                <button class="tool-btn" id="start-stt">Start</button>
+                                <button class="tool-btn" id="stop-stt" style="background:#e74c3c;">Stop</button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="stt-output">Transcribed Text:</label>
+                            <textarea id="stt-output" placeholder="Transcription appears here..." style="min-height:200px;"></textarea>
+                        </div>
+                        <p style="color:#666;">This uses the Web Speech API in supported browsers. For file-based transcription, use a backend (Whisper, AssemblyAI, etc.).</p>
+                    `;
+                    break;
+
+                case 25: // QR Code Generator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="qrcode-content">Content for QR Code:</label>
+                            <textarea id="qrcode-content" placeholder="Enter URL or text..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="qrcode-size">QR Code Size:</label>
+                            <select id="qrcode-size">
+                                <option value="150">Small (150x150)</option>
+                                <option value="250" selected>Medium (250x250)</option>
+                                <option value="350">Large (350x350)</option>
+                            </select>
+                        </div>
+                        <button class="tool-btn" id="generate-qr-btn">Generate QR Code</button>
+                        <div id="qrcode-result" style="margin: 20px 0; text-align: center;"></div>
+                        <button class="download-btn" id="download-qr">Download QR Code</button>
+                    `;
+                    break;
+
+                case 26: // QR Code Scanner
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="qr-scan-file">Upload an image containing QR code:</label>
+                            <input type="file" id="qr-scan-file" accept="image/*">
+                        </div>
+                        <button class="tool-btn" id="scan-qr-btn">Scan QR</button>
+                        <div class="result-container" id="qr-scan-result" style="display:none;">
+                            <h3>QR Result</h3>
+                            <p id="qr-text"></p>
+                            <a id="qr-link" target="_blank"></a>
+                        </div>
+                        <p style="color:#666;">This uses the public qrserver.com read API (file URL method). Works for most static images.</p>
+                    `;
+                    break;
+
+                case 27: // Barcode Generator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="barcode-content">Enter text/number for barcode:</label>
+                            <input id="barcode-content" placeholder="e.g., 0123456789">
+                        </div>
+                        <div class="input-group">
+                            <label for="barcode-size">Width (px, approx):</label>
+                            <input id="barcode-size" type="number" value="400">
+                        </div>
+                        <button class="tool-btn" id="generate-barcode-btn">Generate Barcode</button>
+                        <div id="barcode-result" style="margin-top:10px;text-align:center;"></div>
+                        <button class="download-btn" id="download-barcode">Download Barcode</button>
+                        <p style="color:#666;margin-top:8px;">Uses TEC-IT barcode generation endpoint for image output.</p>
+                    `;
+                    break;
+
+                case 28: // JSON Formatter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="json-input">Paste JSON:</label>
+                            <textarea id="json-input" placeholder='{"key": "value"}'></textarea>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="tool-btn" id="format-json">Format</button>
+                            <button class="tool-btn" id="validate-json">Validate</button>
+                            <button class="tool-btn" id="copy-json">Copy</button>
+                        </div>
+                        <div class="result-container" id="json-result" style="display:none;">
+                            <textarea id="json-output" style="width:100%;min-height:200px;"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 29: // XML Formatter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="xml-input">Paste XML:</label>
+                            <textarea id="xml-input" placeholder="<root></root>"></textarea>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="tool-btn" id="format-xml">Format</button>
+                            <button class="tool-btn" id="validate-xml">Validate</button>
+                            <button class="tool-btn" id="copy-xml">Copy</button>
+                        </div>
+                        <div class="result-container" id="xml-result" style="display:none;">
+                            <textarea id="xml-output" style="width:100%;min-height:200px;"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 30: // HTML Formatter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="html-input">Paste HTML:</label>
+                            <textarea id="html-input" placeholder="<div>Hello</div>"></textarea>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="tool-btn" id="format-html">Format</button>
+                            <button class="tool-btn" id="copy-html">Copy</button>
+                        </div>
+                        <div class="result-container" id="html-result" style="display:none;">
+                            <textarea id="html-output" style="width:100%;min-height:200px;"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 31: // Base64 Encoder/Decoder
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="b64-input">Input:</label>
+                            <textarea id="b64-input"></textarea>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="tool-btn" id="b64-encode">Encode</button>
+                            <button class="tool-btn" id="b64-decode">Decode</button>
+                            <button class="tool-btn" id="b64-copy">Copy</button>
+                        </div>
+                        <div class="result-container" id="b64-result" style="display:none;">
+                            <textarea id="b64-output" style="width:100%;min-height:150px;"></textarea>
+                        </div>
+                    `;
+                    break;
+
+                case 32: // URL Encoder/Decoder
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="url-input">URL / Text:</label>
+                            <input id="url-input">
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="tool-btn" id="url-encode-btn">Encode</button>
+                            <button class="tool-btn" id="url-decode-btn">Decode</button>
+                            <button class="tool-btn" id="url-copy-btn">Copy</button>
+                        </div>
+                        <div class="result-container" id="url-result" style="display:none;">
+                            <input id="url-output" style="width:100%;padding:10px;">
+                        </div>
+                    `;
+                    break;
+
+                case 33: // Password Generator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="password-length">Password Length:</label>
+                            <input type="number" id="password-length" min="8" max="32" value="12">
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="uppercase" checked> Include Uppercase Letters
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="lowercase" checked> Include Lowercase Letters
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="numbers" checked> Include Numbers
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="symbols"> Include Symbols
+                            </label>
+                        </div>
+                        <button class="tool-btn" id="generate-password-btn">Generate Password</button>
+                        <div class="result-container" id="password-result">
+                            <h3>Your Generated Password:</h3>
+                            <p id="generated-password" style="font-size: 1.2rem; margin: 10px 0; word-break: break-all;"></p>
+                            <button class="tool-btn" id="copy-password">Copy Password</button>
+                        </div>
+                    `;
+                    break;
+
+                case 34: // Word Counter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="word-counter-input">Paste text:</label>
+                            <textarea id="word-counter-input"></textarea>
+                        </div>
+                        <button class="tool-btn" id="count-words-btn">Count Words</button>
+                        <div class="result-container" id="word-count-result" style="display:none;">
+                            <p id="word-count-display"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 35: // Character Counter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="char-counter-input">Paste text:</label>
+                            <textarea id="char-counter-input"></textarea>
+                        </div>
+                        <button class="tool-btn" id="count-chars-btn">Count Characters</button>
+                        <div class="result-container" id="char-count-result" style="display:none;">
+                            <p id="char-count-display"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 36: // Case Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="case-text">Enter Text:</label>
+                            <textarea id="case-text" placeholder="Type or paste text here..."></textarea>
+                        </div>
+                        <div class="input-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="tool-btn" id="uppercase-btn" style="flex: 1; min-width: 120px;">UPPERCASE</button>
+                            <button class="tool-btn" id="lowercase-btn" style="flex: 1; min-width: 120px;">lowercase</button>
+                            <button class="tool-btn" id="titlecase-btn" style="flex: 1; min-width: 120px;">Title Case</button>
+                        </div>
+                        <div class="result-container" id="case-result">
+                            <h3>Converted Text:</h3>
+                            <textarea id="converted-text" readonly style="width: 100%; min-height: 100px; margin: 10px 0;"></textarea>
+                            <button class="tool-btn" id="copy-case-text">Copy Text</button>
+                        </div>
+                    `;
+                    break;
+
+                case 37: // Remove Extra Spaces
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="spaces-text">Enter Text:</label>
+                            <textarea id="spaces-text"></textarea>
+                        </div>
+                        <button class="tool-btn" id="remove-spaces-btn">Remove Extra Spaces</button>
+                        <div class="result-container" id="spaces-result" style="display:none;">
+                            <textarea id="spaces-output" style="width:100%;min-height:150px;"></textarea>
+                            <button class="tool-btn" id="copy-spaces-output">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                case 38: // Plagiarism Checker (basic)
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="plag-text">Paste text to check:</label>
+                            <textarea id="plag-text" placeholder="This is a simple, local plagiarism checker (checks repeated sentences/phrases)."></textarea>
+                        </div>
+                        <button class="tool-btn" id="plag-check-btn">Check</button>
+                        <div class="result-container" id="plag-result" style="display:none;">
+                            <p id="plag-score"></p>
+                            <details style="margin-top:8px;"><summary>Details</summary><pre id="plag-details" style="white-space:pre-wrap;"></pre></details>
+                        </div>
+                        <p style="color:#666;margin-top:6px;">Note: This is a basic local checker — for full web plagiarism scanning use a server/third-party.</p>
+                    `;
+                    break;
+
+                case 39: // Grammar Checker (basic)
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="grammar-text">Paste text:</label>
+                            <textarea id="grammar-text"></textarea>
+                        </div>
+                        <button class="tool-btn" id="grammar-check-btn">Check Grammar (basic)</button>
+                        <div class="result-container" id="grammar-result" style="display:none;">
+                            <pre id="grammar-output" style="white-space:pre-wrap;"></pre>
+                        </div>
+                        <p style="color:#666;">This provides simple checks (sentence start capitalization, repeated words, long sentences). For advanced grammar checks use an API.</p>
+                    `;
+                    break;
+
+                case 40: // Text Reverser
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="reverse-text">Enter text:</label>
+                            <textarea id="reverse-text"></textarea>
+                        </div>
+                        <button class="tool-btn" id="reverse-btn">Reverse Text</button>
+                        <div class="result-container" id="reverse-result" style="display:none;">
+                            <textarea id="reverse-output" style="width:100%;min-height:150px;"></textarea>
+                            <button class="tool-btn" id="copy-reverse">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                case 41: // Unit Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="unit-type">Type:</label>
+                            <select id="unit-type">
+                                <option value="length">Length (m, km, cm, inch, ft)</option>
+                                <option value="weight">Weight (kg, g, lb)</option>
+                                <option value="temperature">Temperature (C, F, K)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="unit-value">Value:</label>
+                            <input id="unit-value" type="number" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="unit-from">From:</label>
+                            <input id="unit-from" placeholder="unit (e.g., m)">
+                        </div>
+                        <div class="input-group">
+                            <label for="unit-to">To:</label>
+                            <input id="unit-to" placeholder="unit (e.g., km)">
+                        </div>
+                        <button class="tool-btn" id="convert-unit-btn">Convert</button>
+                        <div class="result-container" id="unit-result" style="display:none;">
+                            <p id="unit-output"></p>
+                        </div>
+                        <p style="color:#666;">Supported units: length (m, km, cm, mm, in, ft), weight (kg,g,lb), temperature (C,F,K).</p>
+                    `;
+                    break;
+
+                case 42: // Currency Converter
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="currency-amount">Amount:</label>
+                            <input id="currency-amount" type="number" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label for="currency-from">From (ISO code):</label>
+                            <input id="currency-from" value="USD">
+                        </div>
+                        <div class="input-group">
+                            <label for="currency-to">To (ISO code):</label>
+                            <input id="currency-to" value="INR">
+                        </div>
+                        <button class="tool-btn" id="convert-currency-btn">Convert (uses exchangerate.host)</button>
+                        <div class="result-container" id="currency-result" style="display:none;">
+                            <p id="currency-output"></p>
+                        </div>
+                        <p style="color:#666;">This tool fetches live rates from exchangerate.host (no API key required).</p>
+                    `;
+                    break;
+
+                case 43: // Calculator
+                    modalBody.innerHTML = `
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                            <input type="text" id="calc-display" readonly style="width: 100%; padding: 15px; font-size: 1.5rem; text-align: right; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                <button class="tool-btn calc-btn" data-value="C" style="background: #e74c3c;">C</button>
+                                <button class="tool-btn calc-btn" data-value="←">←</button>
+                                <button class="tool-btn calc-btn" data-value="/">/</button>
+                                <button class="tool-btn calc-btn" data-value="*">×</button>
+                                
+                                <button class="tool-btn calc-btn" data-value="7">7</button>
+                                <button class="tool-btn calc-btn" data-value="8">8</button>
+                                <button class="tool-btn calc-btn" data-value="9">9</button>
+                                <button class="tool-btn calc-btn" data-value="-">-</button>
+                                
+                                <button class="tool-btn calc-btn" data-value="4">4</button>
+                                <button class="tool-btn calc-btn" data-value="5">5</button>
+                                <button class="tool-btn calc-btn" data-value="6">6</button>
+                                <button class="tool-btn calc-btn" data-value="+">+</button>
+                                
+                                <button class="tool-btn calc-btn" data-value="1">1</button>
+                                <button class="tool-btn calc-btn" data-value="2">2</button>
+                                <button class="tool-btn calc-btn" data-value="3">3</button>
+                                <button class="tool-btn calc-btn" data-value="=" style="grid-row: span 2; background: #2ecc71;">=</button>
+                                
+                                <button class="tool-btn calc-btn" data-value="0" style="grid-column: span 2;">0</button>
+                                <button class="tool-btn calc-btn" data-value=".">.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 44: // Age Calculator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="birthdate">Select Birth Date:</label>
+                            <input type="date" id="birthdate">
+                        </div>
+                        <button class="tool-btn" id="calc-age-btn">Calculate Age</button>
+                        <div class="result-container" id="age-result" style="display:none;">
+                            <p id="age-output"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 45: // BMI Calculator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="bmi-weight">Weight (kg):</label>
+                            <input id="bmi-weight" type="number" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="bmi-height">Height (cm):</label>
+                            <input id="bmi-height" type="number" step="0.1">
+                        </div>
+                        <button class="tool-btn" id="calc-bmi-btn">Calculate BMI</button>
+                        <div class="result-container" id="bmi-result" style="display:none;">
+                            <p id="bmi-output"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 46: // Percentage Calculator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="percent-base">Base Number:</label>
+                            <input id="percent-base" type="number">
+                        </div>
+                        <div class="input-group">
+                            <label for="percent-part">Part Number:</label>
+                            <input id="percent-part" type="number">
+                        </div>
+                        <button class="tool-btn" id="percent-calc-btn">Calculate Percentage</button>
+                        <div class="result-container" id="percent-result" style="display:none;">
+                            <p id="percent-output"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 47: // Loan/EMI Calculator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="loan-amount">Loan Amount:</label>
+                            <input id="loan-amount" type="number">
+                        </div>
+                        <div class="input-group">
+                            <label for="loan-rate">Annual Interest Rate (%):</label>
+                            <input id="loan-rate" type="number" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label for="loan-tenure">Tenure (years):</label>
+                            <input id="loan-tenure" type="number">
+                        </div>
+                        <button class="tool-btn" id="calc-emi-btn">Calculate EMI</button>
+                        <div class="result-container" id="emi-result" style="display:none;">
+                            <p id="emi-output"></p>
+                        </div>
+                    `;
+                    break;
+
+                case 48: // Color Picker
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="color-input">Pick a color:</label>
+                            <input type="color" id="color-input" value="#2B2D42">
+                        </div>
+                        <div class="result-container" id="color-result" style="display:block;">
+                            <p>Hex: <span id="color-hex">#2B2D42</span></p>
+                            <p>RGB: <span id="color-rgb">43,45,66</span></p>
+                        </div>
+                    `;
+                    break;
+
+                case 49: // Gradient Generator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="grad-c1">Color 1:</label>
+                            <input type="color" id="grad-c1" value="#2B2D42">
+                        </div>
+                        <div class="input-group">
+                            <label for="grad-c2">Color 2:</label>
+                            <input type="color" id="grad-c2" value="#c8e6c9">
+                        </div>
+                        <div class="input-group">
+                            <label for="grad-dir">Direction:</label>
+                            <select id="grad-dir">
+                                <option value="to right">Left → Right</option>
+                                <option value="to bottom">Top → Bottom</option>
+                                <option value="135deg">135deg</option>
+                            </select>
+                        </div>
+                        <button class="tool-btn" id="generate-gradient-btn">Generate CSS</button>
+                        <div class="result-container" id="grad-result" style="display:none;">
+                            <div id="grad-preview" style="height:100px;border-radius:4px;"></div>
+                            <pre id="grad-css" style="white-space:pre-wrap;margin-top:8px;"></pre>
+                            <button class="tool-btn" id="copy-grad-css">Copy CSS</button>
+                        </div>
+                    `;
+                    break;
+
+                case 50: // Lorem Ipsum Generator
+                    modalBody.innerHTML = `
+                        <div class="input-group">
+                            <label for="lorem-paras">Paragraphs:</label>
+                            <input id="lorem-paras" type="number" min="1" max="20" value="3">
+                        </div>
+                        <button class="tool-btn" id="generate-lorem-btn">Generate</button>
+                        <div class="result-container" id="lorem-result" style="display:none;">
+                            <textarea id="lorem-output" style="width:100%;min-height:200px;"></textarea>
+                            <button class="tool-btn" id="copy-lorem">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                default:
+                    modalBody.innerHTML = `
+                        <p>This tool is currently in development. Please check back later.</p>
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="font-size: 3rem; color: #2B2D42;">🔧</div>
+                            <p style="margin-top: 15px;">We're working hard to bring you this tool soon!</p>
+                        </div>
+                    `;
+            }
+            
+            // Add event listeners for the specific tool functionality
+            setTimeout(() => addToolEventListeners(toolId), 60); // slight delay for DOM insertion
+            // Show the modal
+            toolModal.style.display = 'block';
+        }
+
+        // Function to add event listeners for tool functionality
+        function addToolEventListeners(toolId) {
+            // Helper: dynamic script loader
+            function loadScript(url) {
+                return new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${url}"]`)) { resolve(); return; }
+                    const s = document.createElement('script');
+                    s.src = url;
+                    s.onload = () => resolve();
+                    s.onerror = () => reject(new Error('Failed to load ' + url));
+                    document.head.appendChild(s);
+                });
+            }
+
+            switch(toolId) {
+                case 1: // PDF Compressor
+                    const compressBtn = document.getElementById('compress-btn');
+                    if (compressBtn) {
+                        compressBtn.addEventListener('click', function() {
+                            const fileInput = document.getElementById('pdf-compress');
+                            if (!fileInput.files.length) {
+                                alert('Please select a PDF file first.');
+                                return;
+                            }
+                            const loadingElement = document.getElementById('compress-loading');
+                            const downloadBtn = document.getElementById('download-compressed');
+                            loadingElement.style.display = 'block';
+                            // Simulate processing time. In production, send to server with FormData.
+                            setTimeout(() => {
+                                loadingElement.style.display = 'none';
+                                downloadBtn.style.display = 'block';
+                                alert('PDF compressed successfully (simulation). For real compression, set up a server endpoint and send the file via fetch.');
+                                // provide sample API snippet in console / copy action
+                                downloadBtn.onclick = () => alert('This would download the compressed PDF when server returns it.');
+                            }, 1500);
+                        });
+
+                        const dlCompress = document.getElementById('download-compressed');
+                        if (dlCompress) dlCompress.addEventListener('click', () => alert('In a real application, the compressed PDF would be downloaded here.'));
+                    }
+                    break;
+
+                case 2: // PDF Merger
+                    const mergeBtn = document.getElementById('merge-pdfs-btn');
+                    if (mergeBtn) {
+                        mergeBtn.addEventListener('click', () => {
+                            const files = document.getElementById('pdf-merge-files').files;
+                            if (!files.length || files.length < 2) {
+                                alert('Please select at least 2 PDF files to merge.');
+                                return;
+                            }
+                            showLoading('merge-loading');
+                            // Simulate merge and provide sample fetch snippet
+                            setTimeout(() => {
+                                hideLoading('merge-loading');
+                                document.getElementById('download-merged').style.display = 'block';
+                                alert('PDF merge simulated. For real merge, POST files to a server endpoint that performs the merge (sample API copied to clipboard).');
+                                document.getElementById('download-merged').onclick = () => alert('Download would appear after server returns merged file.');
+                                // copy sample snippet
+                                const sample = `// Sample client-side fetch (multipart) for /api/merge
+const fd = new FormData();
+for (let f of files) fd.append('files', f);
+fetch('/api/merge', { method: 'POST', body: fd })
+  .then(r=>r.blob())
+  .then(blob=>{ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='merged.pdf'; a.click(); });
+`;
+                                copyToClipboard(sample).then(()=>console.log('Sample merge API call copied to clipboard.'));
+                            }, 1000);
+                        });
+                    }
+                    break;
+
+                case 3: // Word to PDF
+                    document.getElementById('word-to-pdf-btn').addEventListener('click', () => {
+                        const f = document.getElementById('word-to-pdf-file').files[0];
+                        if (!f) { alert('Select a .docx file.'); return; }
+                        // show sample API snippet and result container
+                        document.getElementById('word-to-pdf-result').style.display = 'block';
+                        document.getElementById('copy-word-pdf-api').onclick = () => {
+                            const sample = `// Node/Express sample (server) - convert docx -> pdf using LibreOffice
+fetch('/api/word-to-pdf', { method:'POST', body: new FormData(document.getElementById('form')) })
+  .then(r=>r.blob()).then(blob=>{ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='converted.pdf'; a.click(); });
+`;
+                            copyToClipboard(sample).then(()=>alert('Sample API snippet copied to clipboard.'));
+                        };
+                    });
+                    break;
+
+                case 4: // PDF to Word
+                    document.getElementById('pdf-to-word-btn').addEventListener('click', () => {
+                        const f = document.getElementById('pdf-to-word-file').files[0];
+                        if (!f) { alert('Select a PDF file.'); return; }
+                        document.getElementById('pdf-to-word-result').style.display = 'block';
+                        document.getElementById('copy-pdf-word-api').onclick = () => {
+                            const sample = `// Server-side approach: use LibreOffice or commercial API to convert PDF to DOCX
+// Client: POST to /api/pdf-to-word and download response
+`;
+                            copyToClipboard(sample).then(()=>alert('Sample API snippet copied to clipboard.'));
+                        };
+                    });
+                    break;
+
+                case 5: // PDF to TXT
+                    (function() {
+                        const btn = document.getElementById('pdf-to-txt-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', async () => {
+                            const f = document.getElementById('pdf-to-txt-file').files[0];
+                            if (!f) { alert('Please upload a PDF file.'); return; }
+                            showLoading('pdf-to-txt-loading');
+                            // Try to use pdf.js if loaded; otherwise suggest server
+                            if (!window.pdfjsLib) {
+                                // Try to load pdf.js from cdn (light attempt)
+                                try {
+                                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js');
+                                    window.pdfjsLib = window['pdfjs-dist/build/pdf'];
+                                } catch(e) {
+                                    hideLoading('pdf-to-txt-loading');
+                                    alert('pdf.js not available. For robust extraction, use a server. A sample fetch snippet has been copied to clipboard.');
+                                    const sample = `// server example: use pdfminer or Apache PDFBox to extract text
+fetch('/api/pdf-to-text', { method:'POST', body: new FormData(document.getElementById('form')) }).then(r=>r.text()).then(txt=>console.log(txt));
+`;
+                                    copyToClipboard(sample);
+                                    return;
+                                }
+                            }
+                            // If pdf.js is available, attempt simple extraction
+                            const arrayBuffer = await f.arrayBuffer();
+                            const pdf = await window.pdfjsLib.getDocument({ data:arrayBuffer }).promise;
+                            let fullText = '';
+                            for (let p = 1; p <= pdf.numPages; p++) {
+                                const page = await pdf.getPage(p);
+                                const txt = await page.getTextContent();
+                                const pageText = txt.items.map(i => i.str).join(' ');
+                                fullText += pageText + '\n\n';
+                            }
+                            hideLoading('pdf-to-txt-loading');
+                            document.getElementById('pdf-to-txt-result').style.display = 'block';
+                            document.getElementById('pdf-extracted-text').value = fullText.trim();
+                            document.getElementById('copy-pdf-text').onclick = () => { copyToClipboard(fullText).then(()=>alert('Copied!')); };
+                        });
+                    })();
+                    break;
+
+                case 6: // Word to TXT (client-side for docx)
+                    (function() {
+                        const btn = document.getElementById('word-to-txt-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', async () => {
+                            const f = document.getElementById('word-to-txt-file').files[0];
+                            if (!f) { alert('Please upload a .docx file (not .doc).'); return; }
+                            // .docx is a zip containing document.xml; we can extract simple text
+                            try {
+                                const buffer = await f.arrayBuffer();
+                                // Use JSZip via CDN? attempt light extraction without JSZip by reading as blob and using ZipReader is complex.
+                                // Try to load JSZip dynamically
+                                await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+                                const zip = await JSZip.loadAsync(buffer);
+                                const docXml = await zip.file('word/document.xml').async('string');
+                                // Strip tags to get text content
+                                const text = docXml.replace(/<w:p[^>]*>/g, '\n').replace(/<[^>]+>/g, '');
+                                document.getElementById('word-to-txt-result').style.display = 'block';
+                                document.getElementById('word-to-txt-output').value = text.trim();
+                                document.getElementById('copy-word-text').onclick = () => copyToClipboard(text).then(()=>alert('Copied!'));
+                            } catch(err) {
+                                alert('Failed to extract text client-side. Consider server conversion. Error: ' + err.message);
+                            }
+                        });
+                    })();
+                    break;
+
+                case 7: // Excel to PDF - sample copy
+                    (function() {
+                        const btn = document.getElementById('excel-to-pdf-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => {
+                            document.getElementById('excel-api-result').style.display = 'block';
+                            document.getElementById('copy-excel-api').onclick = () => {
+                                const sample = `// Example: upload to /api/excel-to-pdf and get PDF
+fetch('/api/excel-to-pdf', { method:'POST', body: new FormData(form) }).then(r=>r.blob()).then(b=>{ const url=URL.createObjectURL(b); const a=document.createElement('a'); a.href=url; a.download='out.pdf'; a.click(); });
+`;
+                                copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                            };
+                        });
+                    })();
+                    break;
+
+                case 8: // PDF to Excel
+                    (function() {
+                        const btn = document.getElementById('pdf-to-excel-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => {
+                            document.getElementById('pdf-to-excel-result').style.display = 'block';
+                            document.getElementById('copy-pdf-excel-api').onclick = () => {
+                                const sample = `// Server example: use tabula or Camelot to extract tables, return XLSX
+fetch('/api/pdf-to-excel', { method:'POST', body: new FormData(form) }).then(r=>r.blob()).then(b=>{/* download */});
+`;
+                                copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                            };
+                        });
+                    })();
+                    break;
+
+                case 9: // PPT to PDF
+                    (function() {
+                        const btn = document.getElementById('ppt-to-pdf-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => alert('PPT -> PDF requires server-side conversion. Click "Copy Sample API Call" on the UI if shown.'));
+                    })();
+                    break;
+
+                case 10: // PDF to PPT
+                    (function() {
+                        const btn = document.getElementById('pdf-to-ppt-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => alert('PDF -> PPT requires server-side conversion. Click "Copy Sample API Call" on the UI if shown.'));
+                    })();
+                    break;
+
+                case 11: // PDF Splitter
+                    (function() {
+                        const btn = document.getElementById('pdf-split-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => {
+                            const f = document.getElementById('pdf-split-file').files[0];
+                            const range = document.getElementById('split-range').value;
+                            if (!f || !range) { alert('Select a PDF and set pages to extract (e.g., 1-3).'); return; }
+                            document.getElementById('pdf-split-result').style.display = 'block';
+                            document.getElementById('copy-pdf-split-api').onclick = () => {
+                                const sample = `// Server: handle page ranges and return split PDF
+fetch('/api/pdf-split', { method:'POST', body: new FormData(form) }).then(r=>r.blob())...`;
+                                copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                            };
+                        });
+                    })();
+                    break;
+
+                case 12: // PDF Unlocker
+                    (function() {
+                        const btn = document.getElementById('pdf-unlock-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => {
+                            const f = document.getElementById('pdf-unlock-file').files[0];
+                            const pwd = document.getElementById('pdf-password').value;
+                            if (!f) { alert('Upload PDF.'); return; }
+                            alert('Unlocking PDFs requires server-side libraries. If you own the file, send to your server endpoint to remove password. For security/legal reasons, do not use on others files.');
+                        });
+                    })();
+                    break;
+
+                case 13: // PDF Protector
+                    (function() {
+                        const btn = document.getElementById('pdf-protect-btn');
+                        if (!btn) return;
+                        btn.addEventListener('click', () => {
+                            document.getElementById('pdf-protect-result').style.display = 'block';
+                            document.getElementById('copy-protect-api').onclick = () => {
+                                const sample = `// Server example: use PyPDF2 or qpdf to set password
+fetch('/api/pdf-protect', { method:'POST', body: new FormData(form) }).then(r=>r.blob())...`;
+                                copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                            };
+                        });
+                    })();
+                    break;
+
+                case 14: // Image Compressor
+                    (function() {
+                        const qualitySlider = document.getElementById('image-quality');
+                        const qualityValue = document.getElementById('quality-value');
+                        if (qualitySlider) {
+                            qualitySlider.addEventListener('input', function() {
+                                qualityValue.textContent = this.value + '%';
+                            });
+                        }
+                        const imgInput = document.getElementById('image-compress');
+                        if (imgInput) {
+                            imgInput.addEventListener('change', function(e) {
+                                if (this.files && this.files[0]) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(event) {
+                                        const img = document.createElement('img');
+                                        img.src = event.target.result;
+                                        img.style.maxWidth = '100%';
+                                        img.style.maxHeight = '200px';
+                                        const preview = document.getElementById('image-preview');
+                                        preview.innerHTML = '';
+                                        preview.appendChild(img);
+                                    };
+                                    reader.readAsDataURL(this.files[0]);
+                                }
+                            });
+                        }
+                        const compressImageBtn = document.getElementById('compress-image-btn');
+                        if (compressImageBtn) {
+                            compressImageBtn.addEventListener('click', async () => {
+                                const fileInput = document.getElementById('image-compress');
+                                if (!fileInput.files.length) { alert('Please select an image first.'); return; }
+                                const file = fileInput.files[0];
+                                const quality = parseInt(document.getElementById('image-quality').value,10) / 100;
+                                showLoading('image-loading');
+                                // Compress using canvas
+                                const img = new Image();
+                                img.onload = () => {
+                                    const canvas = document.createElement('canvas');
+                                    canvas.width = img.width;
+                                    canvas.height = img.height;
+                                    const ctx = canvas.getContext('2d');
+                                    ctx.drawImage(img,0,0);
+                                    // Convert to JPEG with quality
+                                    const mime = 'image/jpeg';
+                                    const dataURL = canvas.toDataURL(mime, quality);
+                                    hideLoading('image-loading');
+                                    document.getElementById('download-compressed-image').style.display = 'block';
+                                    document.getElementById('download-compressed-image').onclick = () => downloadDataURL(dataURL, 'compressed.jpg');
+                                    alert('Image compressed in-browser. Click download to save.');
+                                };
+                                img.onerror = (e) => { hideLoading('image-loading'); alert('Failed to process image.'); };
+                                const reader = new FileReader();
+                                reader.onload = (ev) => { img.src = ev.target.result; };
+                                reader.readAsDataURL(file);
+                            });
+                        }
+                    })();
+                    break;
+
+                case 15: // Image Converter
+                    (function() {
+                        const input = document.getElementById('image-convert-file');
+                        const preview = document.getElementById('image-convert-preview');
+                        let lastDataURL = null;
+                        input.addEventListener('change', function() {
+                            if (this.files && this.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.style.maxWidth = '100%';
+                                    img.style.maxHeight = '200px';
+                                    preview.innerHTML = '';
+                                    preview.appendChild(img);
+                                    lastDataURL = e.target.result;
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        });
+                        document.getElementById('convert-image-btn').addEventListener('click', () => {
+                            if (!lastDataURL) { alert('Upload an image first.'); return; }
+                            const format = document.getElementById('convert-format').value;
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img,0,0);
+                                const dataURL = canvas.toDataURL(format);
+                                document.getElementById('download-converted-image').style.display = 'block';
+                                document.getElementById('download-converted-image').onclick = () => downloadDataURL(dataURL, 'converted.' + format.split('/')[1]);
+                                alert('Image converted. Click download to save.');
+                            };
+                            img.src = lastDataURL;
+                        });
+                    })();
+                    break;
+
+                case 16: // Image Resizer
+                    (function() {
+                        let lastImageData = null;
+                        document.getElementById('image-resize-file').addEventListener('change', function() {
+                            if (this.files && this.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = e => {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.style.maxWidth = '100%';
+                                    img.style.maxHeight = '200px';
+                                    const preview = document.getElementById('image-resize-preview');
+                                    preview.innerHTML = '';
+                                    preview.appendChild(img);
+                                    lastImageData = e.target.result;
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        });
+                        document.getElementById('resize-image-btn').addEventListener('click', () => {
+                            if (!lastImageData) { alert('Upload an image first.'); return; }
+                            const w = parseInt(document.getElementById('resize-width').value,10) || null;
+                            const h = parseInt(document.getElementById('resize-height').value,10) || null;
+                            if (!w && !h) { alert('Provide width or height'); return; }
+                            const img = new Image();
+                            img.onload = () => {
+                                let newW = w || Math.round(img.width * (h / img.height));
+                                let newH = h || Math.round(img.height * (w / img.width));
+                                const canvas = document.createElement('canvas');
+                                canvas.width = newW; canvas.height = newH;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img,0,0,newW,newH);
+                                const dataURL = canvas.toDataURL('image/jpeg', 0.92);
+                                document.getElementById('download-resized-image').style.display = 'block';
+                                document.getElementById('download-resized-image').onclick = () => downloadDataURL(dataURL, 'resized.jpg');
+                                const preview = document.getElementById('image-resize-preview');
+                                preview.innerHTML = '<img src="'+dataURL+'" style="max-width:100%;max-height:200px;">';
+                                alert('Resized image ready. Click download.');
+                            };
+                            img.src = lastImageData;
+                        });
+                    })();
+                    break;
+
+                case 17: // Image Cropper
+                    (function() {
+                        let lastImage = null;
+                        document.getElementById('image-crop-file').addEventListener('change', function() {
+                            if (this.files && this.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = e => {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.style.maxWidth = '100%';
+                                    img.style.maxHeight = '200px';
+                                    const preview = document.getElementById('image-crop-preview');
+                                    preview.innerHTML = '';
+                                    preview.appendChild(img);
+                                    lastImage = e.target.result;
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        });
+                        document.getElementById('crop-image-btn').addEventListener('click', () => {
+                            if (!lastImage) { alert('Upload an image first.'); return; }
+                            const x = parseInt(document.getElementById('crop-x').value || 0,10);
+                            const y = parseInt(document.getElementById('crop-y').value || 0,10);
+                            const w = parseInt(document.getElementById('crop-w').value || 100,10);
+                            const h = parseInt(document.getElementById('crop-h').value || 100,10);
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = w; canvas.height = h;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+                                const dataURL = canvas.toDataURL('image/png');
+                                document.getElementById('download-cropped-image').style.display = 'block';
+                                document.getElementById('download-cropped-image').onclick = () => downloadDataURL(dataURL, 'cropped.png');
+                                const preview = document.getElementById('image-crop-preview');
+                                preview.innerHTML = '<img src="'+dataURL+'" style="max-width:100%;max-height:200px;">';
+                                alert('Cropped image ready.');
+                            };
+                            img.src = lastImage;
+                        });
+                    })();
+                    break;
+
+                case 18: // Image to PDF (jsPDF dynamic load)
+                    (function() {
+                        let lastImage = null;
+                        document.getElementById('image-to-pdf-file').addEventListener('change', function() {
+                            if (this.files && this.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = e => lastImage = e.target.result;
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        });
+                        document.getElementById('image-to-pdf-btn').addEventListener('click', async () => {
+                            if (!lastImage) { alert('Upload an image first.'); return; }
+                            showLoading('image-to-pdf-loading');
+                            try {
+                                await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+                                const { jsPDF } = window.jspdf || window.jspdf;
+                                const img = new Image();
+                                img.onload = () => {
+                                    const orientation = document.getElementById('pdf-orientation').value;
+                                    const doc = new jsPDF({ unit:'pt', format:[img.width, img.height], orientation: orientation });
+                                    doc.addImage(img, 'PNG', 0, 0, img.width, img.height);
+                                    const out = doc.output('blob');
+                                    const url = URL.createObjectURL(out);
+                                    hideLoading('image-to-pdf-loading');
+                                    document.getElementById('download-image-pdf').style.display = 'block';
+                                    document.getElementById('download-image-pdf').onclick = () => {
+                                        const a = document.createElement('a'); a.href = url; a.download='image.pdf'; a.click();
+                                    };
+                                    alert('PDF created. Click download.');
+                                };
+                                img.src = lastImage;
+                            } catch(err) {
+                                hideLoading('image-to-pdf-loading');
+                                alert('Failed to load jsPDF or create PDF: ' + err.message);
+                            }
+                        });
+                    })();
+                    break;
+
+                case 19: // PDF to Image
+                    document.getElementById('pdf-to-image-btn').addEventListener('click', () => {
+                        alert('PDF->Image requires pdf.js or server processing. Integrate pdf.js for client-side conversion or create a server endpoint.');
+                    });
+                    break;
+
+                case 20: // Audio Converter
+                    document.getElementById('audio-convert-btn').addEventListener('click', () => {
+                        document.getElementById('audio-api').style.display = 'block';
+                        document.getElementById('copy-audio-api').onclick = () => {
+                            const sample = `// Example server using FFmpeg
+// POST file to /api/convert-audio?format=mp3 and return converted file.
+`;
+                            copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                        };
+                    });
+                    break;
+
+                case 21: // Video Converter
+                    document.getElementById('video-convert-btn').addEventListener('click', () => {
+                        document.getElementById('video-api').style.display = 'block';
+                        document.getElementById('copy-video-api').onclick = () => {
+                            const sample = `// Example: server with FFmpeg accepts video upload and target format
+fetch('/api/convert-video', { method:'POST', body: new FormData(form) })...`;
+                            copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                        };
+                    });
+                    break;
+
+                case 22: // Video to Audio
+                    document.getElementById('video-to-audio-btn').addEventListener('click', () => {
+                        document.getElementById('v2a-api').style.display = 'block';
+                        document.getElementById('copy-v2a-api').onclick = () => {
+                            const sample = `// POST video to /api/extract-audio and return mp3/wav
+`;
+                            copyToClipboard(sample).then(()=>alert('Sample API snippet copied.'));
+                        };
+                    });
+                    break;
+
+                case 23: // Text to Speech
+                    (function() {
+                        // Populate voices
+                        function loadVoices() {
+                            const voices = speechSynthesis.getVoices();
+                            const voiceSelect = document.getElementById('tts-voice');
+                            if (!voiceSelect) return;
+                            voiceSelect.innerHTML = '';
+                            voices.forEach(voice => {
+                                const option = document.createElement('option');
+                                option.value = voice.name;
+                                option.textContent = `${voice.name} (${voice.lang})`;
+                                voiceSelect.appendChild(option);
+                            });
+                        }
+                        loadVoices();
+                        speechSynthesis.addEventListener('voiceschanged', loadVoices);
+                        // Rate slider
+                        const rateSlider = document.getElementById('tts-rate');
+                        const rateValue = document.getElementById('rate-value');
+                        rateSlider.addEventListener('input', function() { rateValue.textContent = this.value; });
+                        // Pitch
+                        const pitchSlider = document.getElementById('tts-pitch');
+                        const pitchValue = document.getElementById('pitch-value');
+                        pitchSlider.addEventListener('input', function(){ pitchValue.textContent = this.value; });
+                        document.getElementById('speak-btn').addEventListener('click', () => {
+                            const text = document.getElementById('tts-text').value || '';
+                            if (!text.trim()) { alert('Enter text.'); return; }
+                            const utterance = new SpeechSynthesisUtterance(text);
+                            const selected = document.getElementById('tts-voice').value;
+                            const voices = speechSynthesis.getVoices();
+                            utterance.rate = parseFloat(rateSlider.value);
+                            utterance.pitch = parseFloat(pitchSlider.value);
+                            for (let v of voices) { if (v.name === selected) { utterance.voice = v; break; } }
+                            speechSynthesis.cancel();
+                            speechSynthesis.speak(utterance);
+                        });
+                        document.getElementById('stop-btn').addEventListener('click', () => speechSynthesis.cancel());
+                    })();
+                    break;
+
+                case 24: // Speech to Text (Web Speech API)
+                    (function() {
+                        const startBtn = document.getElementById('start-stt');
+                        const stopBtn = document.getElementById('stop-stt');
+                        const output = document.getElementById('stt-output');
+
+                        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                            startBtn.onclick = () => alert('SpeechRecognition not supported in this browser. Use Chrome or Edge, or upload audio to a server transcription API.');
+                            stopBtn.onclick = () => {};
+                            return;
+                        }
+
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        const recognition = new SpeechRecognition();
+                        window.recognition = recognition;
+                        recognition.continuous = true;
+                        recognition.interimResults = true;
+                        recognition.lang = 'en-IN';
+
+                        recognition.onresult = (event) => {
+                            let transcript = '';
+                            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                                transcript += event.results[i][0].transcript;
+                            }
+                            output.value = transcript;
+                        };
+                        recognition.onerror = (e) => { console.error(e); };
+
+                        startBtn.onclick = () => {
+                            try {
+                                recognition.start();
+                            } catch(e) { console.warn(e); }
+                        };
+                        stopBtn.onclick = () => {
+                            try { recognition.stop(); } catch(e){}
+                        };
+                    })();
+                    break;
+
+                case 25: // QR Code Generator
+                    (function() {
+                        document.getElementById('generate-qr-btn').addEventListener('click', () => {
+                            const content = document.getElementById('qrcode-content').value;
+                            if (!content.trim()) { alert('Please enter content.'); return; }
+                            const size = document.getElementById('qrcode-size').value;
+                            const qrResult = document.getElementById('qrcode-result');
+                            qrResult.innerHTML = '';
+                            const qrImg = document.createElement('img');
+                            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(content)}`;
+                            qrImg.alt = 'QR Code';
+                            qrImg.style.width = '100%';
+                            qrImg.style.maxWidth = size + 'px';
+                            qrResult.appendChild(qrImg);
+                            document.getElementById('download-qr').style.display = 'block';
+                            document.getElementById('download-qr').onclick = () => {
+                                const link = document.createElement('a'); link.href = qrImg.src; link.download = 'qrcode.png'; link.click();
+                            };
+                        });
+                    })();
+                    break;
+
+                case 26: // QR Code Scanner
+                    (function() {
+                        document.getElementById('scan-qr-btn').addEventListener('click', async () => {
+                            const f = document.getElementById('qr-scan-file').files[0];
+                            if (!f) { alert('Upload an image first'); return; }
+                            // Use object URL and qrserver read API
+                            const url = URL.createObjectURL(f);
+                            try {
+                                const resp = await fetch(`https://api.qrserver.com/v1/read-qr-code/?fileurl=${encodeURIComponent(url)}`);
+                                const data = await resp.json();
+                                URL.revokeObjectURL(url);
+                                const resultArea = document.getElementById('qr-scan-result');
+                                const textEl = document.getElementById('qr-text');
+                                const linkEl = document.getElementById('qr-link');
+                                if (data && data[0] && data[0].symbol && data[0].symbol[0] && data[0].symbol[0].data) {
+                                    const txt = data[0].symbol[0].data;
+                                    textEl.textContent = txt;
+                                    if (txt && (txt.startsWith('http://') || txt.startsWith('https://'))) {
+                                        linkEl.style.display = 'inline';
+                                        linkEl.href = txt;
+                                        linkEl.textContent = 'Open URL';
+                                    } else {
+                                        linkEl.style.display = 'none';
+                                    }
+                                    resultArea.style.display = 'block';
+                                } else {
+                                    alert('No QR code detected or API failed.');
+                                }
+                            } catch(e) {
+                                alert('QR scan failed: ' + e.message);
+                            }
+                        });
+                    })();
+                    break;
+
+                case 27: // Barcode Generator
+                    (function() {
+                        document.getElementById('generate-barcode-btn').addEventListener('click', () => {
+                            const data = document.getElementById('barcode-content').value.trim();
+                            if (!data) { alert('Enter content for barcode'); return; }
+                            const width = parseInt(document.getElementById('barcode-size').value,10) || 400;
+                            const img = document.createElement('img');
+                            const encoded = encodeURIComponent(data);
+                            // TEC-IT barcode generator
+                            img.src = `https://barcode.tec-it.com/barcode.ashx?data=${encoded}&code=Code128&translate-esc=true&multiplebarcodes=false&unit=Fit&dpi=96&imagetype=png&rotation=0&color=%232B2D42`;
+                            img.style.maxWidth = '100%';
+                            const result = document.getElementById('barcode-result');
+                            result.innerHTML = '';
+                            result.appendChild(img);
+                            document.getElementById('download-barcode').style.display = 'block';
+                            document.getElementById('download-barcode').onclick = () => downloadDataURL(img.src, 'barcode.png');
+                        });
+                    })();
+                    break;
+
+                case 28: // JSON Formatter
+                    (function() {
+                        document.getElementById('format-json').addEventListener('click', () => {
+                            const v = document.getElementById('json-input').value;
+                            try {
+                                const obj = JSON.parse(v);
+                                const out = JSON.stringify(obj, null, 2);
+                                document.getElementById('json-output').value = out;
+                                document.getElementById('json-result').style.display = 'block';
+                            } catch (e) {
+                                alert('Invalid JSON: ' + e.message);
+                            }
+                        });
+                        document.getElementById('validate-json').addEventListener('click', () => {
+                            const v = document.getElementById('json-input').value;
+                            try { JSON.parse(v); alert('Valid JSON'); } catch(e){ alert('Invalid JSON: ' + e.message); }
+                        });
+                        document.getElementById('copy-json').addEventListener('click', () => {
+                            const out = document.getElementById('json-output').value || document.getElementById('json-input').value;
+                            copyToClipboard(out).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 29: // XML Formatter
+                    (function() {
+                        function formatXml(xml) {
+                            const PADDING = ' '.repeat(2);
+                            xml = xml.replace(/>\s{0,}</g, '><');
+                            let dom;
+                            try {
+                                dom = new window.DOMParser().parseFromString(xml, 'application/xml');
+                                if (dom.getElementsByTagName('parsererror').length) throw new Error('XML parse error');
+                            } catch (e) {
+                                throw e;
+                            }
+                            const serializer = new XMLSerializer();
+                            // Pretty print manually
+                            const xs = new XMLSerializer();
+                            // naive pretty print:
+                            const reg = /(>)(<)(\/*)/g;
+                            let formatted = xml.replace(reg, '$1\r\n$2$3');
+                            let pad = 0;
+                            return formatted.split('\r\n').map((node) => {
+                                let indent = '';
+                                if (node.match(/.+<\/\w[^>]*>$/)) {
+                                    indent = PADDING.repeat(pad);
+                                } else if (node.match(/^<\/\w/)) {
+                                    if (pad > 0) pad -= 1;
+                                    indent = PADDING.repeat(pad);
+                                } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                                    indent = PADDING.repeat(pad);
+                                    pad += 1;
+                                } else {
+                                    indent = PADDING.repeat(pad);
+                                }
+                                return indent + node;
+                            }).join('\r\n');
+                        }
+                        document.getElementById('format-xml').addEventListener('click', () => {
+                            const v = document.getElementById('xml-input').value;
+                            try {
+                                const out = formatXml(v);
+                                document.getElementById('xml-output').value = out;
+                                document.getElementById('xml-result').style.display = 'block';
+                            } catch(e) {
+                                alert('XML error: '+e.message);
+                            }
+                        });
+                        document.getElementById('validate-xml').addEventListener('click', () => {
+                            try {
+                                const dom = new DOMParser().parseFromString(document.getElementById('xml-input').value,'application/xml');
+                                if (dom.getElementsByTagName('parsererror').length) throw new Error('parse error');
+                                alert('Valid XML');
+                            } catch(e) { alert('XML invalid: '+e.message); }
+                        });
+                        document.getElementById('copy-xml').addEventListener('click', () => {
+                            copyToClipboard(document.getElementById('xml-output').value || document.getElementById('xml-input').value).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 30: // HTML Formatter
+                    (function() {
+                        function formatHTML(html) {
+                            const reg = /(>)(<)(\/*)/g;
+                            let formatted = html.replace(reg, '$1\r\n$2$3');
+                            let pad = 0;
+                            return formatted.split('\r\n').map((node) => {
+                                let indent = '';
+                                if (node.match(/.+<\/\w[^>]*>$/)) {
+                                    indent = '  '.repeat(pad);
+                                } else if (node.match(/^<\/\w/)) {
+                                    if (pad > 0) pad -= 1;
+                                    indent = '  '.repeat(pad);
+                                } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                                    indent = '  '.repeat(pad);
+                                    pad += 1;
+                                } else {
+                                    indent = '  '.repeat(pad);
+                                }
+                                return indent + node;
+                            }).join('\r\n');
+                        }
+                        document.getElementById('format-html').addEventListener('click', () => {
+                            const v = document.getElementById('html-input').value;
+                            const out = formatHTML(v);
+                            document.getElementById('html-output').value = out;
+                            document.getElementById('html-result').style.display = 'block';
+                        });
+                        document.getElementById('copy-html').addEventListener('click', () => {
+                            copyToClipboard(document.getElementById('html-output').value).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 31: // Base64
+                    (function() {
+                        function b64EncodeUnicode(str) {
+                            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                                return String.fromCharCode('0x' + p1);
+                            }));
+                        }
+                        function b64DecodeUnicode(str) {
+                            return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+                                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                            }).join(''));
+                        }
+                        document.getElementById('b64-encode').addEventListener('click', () => {
+                            const v = document.getElementById('b64-input').value || '';
+                            const out = b64EncodeUnicode(v);
+                            document.getElementById('b64-output').value = out;
+                            document.getElementById('b64-result').style.display = 'block';
+                        });
+                        document.getElementById('b64-decode').addEventListener('click', () => {
+                            const v = document.getElementById('b64-input').value || '';
+                            try {
+                                const out = b64DecodeUnicode(v);
+                                document.getElementById('b64-output').value = out;
+                                document.getElementById('b64-result').style.display = 'block';
+                            } catch(e) { alert('Invalid Base64'); }
+                        });
+                        document.getElementById('b64-copy').addEventListener('click', () => {
+                            copyToClipboard(document.getElementById('b64-output').value).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 32: // URL Encoder/Decoder
+                    (function() {
+                        document.getElementById('url-encode-btn').addEventListener('click', () => {
+                            const v = document.getElementById('url-input').value || '';
+                            const out = encodeURIComponent(v);
+                            document.getElementById('url-output').value = out;
+                            document.getElementById('url-result').style.display = 'block';
+                        });
+                        document.getElementById('url-decode-btn').addEventListener('click', () => {
+                            const v = document.getElementById('url-input').value || '';
+                            try {
+                                const out = decodeURIComponent(v);
+                                document.getElementById('url-output').value = out;
+                                document.getElementById('url-result').style.display = 'block';
+                            } catch(e) { alert('Invalid encoded string'); }
+                        });
+                        document.getElementById('url-copy-btn').addEventListener('click', () => {
+                            copyToClipboard(document.getElementById('url-output').value).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 33: // Password Generator
+                    (function() {
+                        document.getElementById('generate-password-btn').addEventListener('click', () => {
+                            const length = parseInt(document.getElementById('password-length').value,10);
+                            const useUpper = document.getElementById('uppercase').checked;
+                            const useLower = document.getElementById('lowercase').checked;
+                            const useNumbers = document.getElementById('numbers').checked;
+                            const useSymbols = document.getElementById('symbols').checked;
+                            if (!useUpper && !useLower && !useNumbers && !useSymbols) { alert('Select at least one char type'); return; }
+                            if (length < 8 || length > 32) { alert('Length between 8 and 32'); return; }
+                            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+                            const numbers = '0123456789';
+                            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+                            let characters = '';
+                            if (useUpper) characters += uppercase;
+                            if (useLower) characters += lowercase;
+                            if (useNumbers) characters += numbers;
+                            if (useSymbols) characters += symbols;
+                            let password = '';
+                            for (let i=0;i<length;i++){ const idx=Math.floor(Math.random()*characters.length); password+=characters[idx]; }
+                            document.getElementById('generated-password').textContent = password;
+                            document.getElementById('password-result').style.display = 'block';
+                        });
+                        document.getElementById('copy-password').addEventListener('click', () => {
+                            const password = document.getElementById('generated-password').textContent;
+                            copyToClipboard(password).then(()=>alert('Copied'));
+                        });
+                    })();
+                    break;
+
+                case 34: // Word Counter
+                    document.getElementById('count-words-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('word-counter-input').value || '';
+                        const words = txt.trim().split(/\s+/).filter(Boolean);
+                        const count = words.length;
+                        document.getElementById('word-count-display').textContent = `Words: ${count}`;
+                        document.getElementById('word-count-result').style.display = 'block';
+                    });
+                    break;
+
+                case 35: // Character Counter
+                    document.getElementById('count-chars-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('char-counter-input').value || '';
+                        document.getElementById('char-count-display').textContent = `Characters: ${txt.length}`;
+                        document.getElementById('char-count-result').style.display = 'block';
+                    });
+                    break;
+
+                case 36: // Case Converter
+                    document.getElementById('uppercase-btn').addEventListener('click', () => {
+                        const text = document.getElementById('case-text').value || '';
+                        document.getElementById('converted-text').value = text.toUpperCase();
+                        document.getElementById('case-result').style.display = 'block';
+                    });
+                    document.getElementById('lowercase-btn').addEventListener('click', () => {
+                        const text = document.getElementById('case-text').value || '';
+                        document.getElementById('converted-text').value = text.toLowerCase();
+                        document.getElementById('case-result').style.display = 'block';
+                    });
+                    document.getElementById('titlecase-btn').addEventListener('click', () => {
+                        const text = document.getElementById('case-text').value || '';
+                        document.getElementById('converted-text').value = text.replace(/\w\S*/g, function(txt) {
+                            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                        });
+                        document.getElementById('case-result').style.display = 'block';
+                    });
+                    document.getElementById('copy-case-text').addEventListener('click', () => {
+                        const text = document.getElementById('converted-text').value;
+                        copyToClipboard(text).then(()=>alert('Copied'));
+                    });
+                    break;
+
+                case 37: // Remove Extra Spaces
+                    document.getElementById('remove-spaces-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('spaces-text').value || '';
+                        const out = txt.replace(/\s+/g,' ').trim();
+                        document.getElementById('spaces-output').value = out;
+                        document.getElementById('spaces-result').style.display = 'block';
+                        document.getElementById('copy-spaces-output').onclick = () => copyToClipboard(out).then(()=>alert('Copied'));
+                    });
+                    break;
+
+                case 38: // Plagiarism Checker (basic)
+                    document.getElementById('plag-check-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('plag-text').value || '';
+                        const sentences = txt.split(/[.!?]\s+/).map(s=>s.trim()).filter(Boolean);
+                        const seen = {};
+                        const duplicates = [];
+                        sentences.forEach(s => {
+                            const key = s.toLowerCase();
+                            seen[key] = (seen[key]||0)+1;
+                            if (seen[key] > 1) duplicates.push(s);
+                        });
+                        const uniqueWords = new Set(txt.toLowerCase().match(/\b\w+\b/g) || []);
+                        const words = (txt.match(/\b\w+\b/g) || []).length;
+                        const uniqueness = Math.round((uniqueWords.size / Math.max(1, words)) * 100);
+                        document.getElementById('plag-score').textContent = `Uniqueness estimate: ${uniqueness}% (local check).`;
+                        document.getElementById('plag-details').textContent = 'Duplicate sentences found:\n' + (duplicates.length ? duplicates.join('\n') : 'None detected locally.');
+                        document.getElementById('plag-result').style.display = 'block';
+                    });
+                    break;
+
+                case 39: // Grammar Checker (very basic)
+                    document.getElementById('grammar-check-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('grammar-text').value || '';
+                        const suggestions = [];
+                        // Check for sentence start lowercase
+                        txt.split(/([.!?]\s+)|\n/).filter(Boolean).forEach(part => {
+                            const trimmed = part.trim();
+                            if (trimmed && /^[a-z]/.test(trimmed)) suggestions.push(`Sentence may not start with capital: "${trimmed.substr(0,30)}..."`);
+                        });
+                        // repeated word check
+                        const repeated = (txt.match(/\b(\w+)\s+\1\b/gi) || []);
+                        if (repeated.length) suggestions.push('Repeated words detected: ' + Array.from(new Set(repeated)).join(', '));
+                        // long sentences
+                        txt.split(/[.!?]/).forEach(s => { if (s.split(/\s+/).length > 50) suggestions.push('Long sentence (>50 words): "' + s.substr(0,60) + '..."'); });
+                        if (!suggestions.length) suggestions.push('No simple issues detected (this is basic; for deeper grammar checks use a grammar API).');
+                        document.getElementById('grammar-output').textContent = suggestions.join('\n');
+                        document.getElementById('grammar-result').style.display = 'block';
+                    });
+                    break;
+
+                case 40: // Text Reverser
+                    document.getElementById('reverse-btn').addEventListener('click', () => {
+                        const txt = document.getElementById('reverse-text').value || '';
+                        const out = txt.split('').reverse().join('');
+                        document.getElementById('reverse-output').value = out;
+                        document.getElementById('reverse-result').style.display = 'block';
+                        document.getElementById('copy-reverse').onclick = () => copyToClipboard(out).then(()=>alert('Copied'));
+                    });
+                    break;
+
+                case 41: // Unit Converter
+                    document.getElementById('convert-unit-btn').addEventListener('click', () => {
+                        const type = document.getElementById('unit-type').value;
+                        const value = parseFloat(document.getElementById('unit-value').value);
+                        const from = document.getElementById('unit-from').value.trim().toLowerCase();
+                        const to = document.getElementById('unit-to').value.trim().toLowerCase();
+                        if (isNaN(value)) { alert('Enter numeric value'); return; }
+                        let result = null;
+                        // length
+                        const lengthFactors = { m:1, km:1000, cm:0.01, mm:0.001, in:0.0254, inch:0.0254, ft:0.3048 };
+                        const weightFactors = { kg:1, g:0.001, lb:0.45359237, lbs:0.45359237 };
+                        if (type === 'length') {
+                            if (!(from in lengthFactors) || !(to in lengthFactors)) { alert('Unsupported length unit'); return; }
+                            result = value * (lengthFactors[from] / lengthFactors[to]);
+                        } else if (type === 'weight') {
+                            if (!(from in weightFactors) || !(to in weightFactors)) { alert('Unsupported weight unit'); return; }
+                            result = value * (weightFactors[from] / weightFactors[to]);
+                        } else if (type === 'temperature') {
+                            // supported: c, f, k
+                            function toC(v, u) { if (u==='c') return v; if (u==='f') return (v-32)*5/9; if (u==='k') return v-273.15; }
+                            function fromC(c, u) { if (u==='c') return c; if (u==='f') return (c*9/5)+32; if (u==='k') return c+273.15; }
+                            const fFrom = from.charAt(0);
+                            const fTo = to.charAt(0);
+                            if (!['c','f','k'].includes(fFrom) || !['c','f','k'].includes(fTo)) { alert('Unsupported temperature unit'); return; }
+                            const c = toC(value, fFrom);
+                            result = fromC(c, fTo);
+                        }
+                        if (result === null) { alert('Conversion failed'); return; }
+                        document.getElementById('unit-output').textContent = `${value} ${from} = ${result} ${to}`;
+                        document.getElementById('unit-result').style.display = 'block';
+                    });
+                    break;
+
+                case 42: // Currency Converter
+                    document.getElementById('convert-currency-btn').addEventListener('click', async () => {
+                        const amount = parseFloat(document.getElementById('currency-amount').value || '0');
+                        const from = (document.getElementById('currency-from').value || 'USD').toUpperCase();
+                        const to = (document.getElementById('currency-to').value || 'INR').toUpperCase();
+                        if (isNaN(amount)) { alert('Enter amount'); return; }
+                        try {
+                            const resp = await fetch(`https://api.exchangerate.host/convert?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&amount=${encodeURIComponent(amount)}`);
+                            const data = await resp.json();
+                            if (data && data.result !== undefined) {
+                                document.getElementById('currency-output').textContent = `${amount} ${from} = ${data.result.toFixed(4)} ${to} (rate: ${data.info.rate})`;
+                                document.getElementById('currency-result').style.display = 'block';
+                            } else {
+                                alert('Failed to fetch rates');
+                            }
+                        } catch(e) {
+                            alert('Error fetching rates: ' + e.message);
+                        }
+                    });
+                    break;
+
+                case 43: // Calculator
+                    (function() {
+                        const display = document.getElementById('calc-display');
+                        let currentInput = '0';
+                        let previousInput = '0';
+                        let operation = null;
+                        let resetScreen = false;
+                        document.querySelectorAll('.calc-btn').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const value = this.getAttribute('data-value');
+                                if (value === 'C') {
+                                    currentInput = '0'; previousInput = '0'; operation = null; resetScreen = false; display.value = '0';
+                                } else if (value === '←') {
+                                    if (currentInput.length === 1) currentInput = '0'; else currentInput = currentInput.slice(0,-1);
+                                    display.value = currentInput;
+                                } else if (value === '=') {
+                                    if (operation) {
+                                        currentInput = calculate(previousInput, currentInput, operation);
+                                        display.value = currentInput;
+                                        operation = null;
+                                    }
+                                } else if (['+', '-', '*', '/'].includes(value)) {
+                                    if (operation !== null) {
+                                        currentInput = calculate(previousInput, currentInput, operation);
+                                    }
+                                    previousInput = currentInput;
+                                    operation = value;
+                                    resetScreen = true;
+                                } else {
+                                    if (currentInput === '0' || resetScreen) {
+                                        currentInput = value; resetScreen = false;
+                                    } else {
+                                        currentInput += value;
+                                    }
+                                    display.value = currentInput;
+                                }
+                            });
+                        });
+                        function calculate(a,b,op) {
+                            a = parseFloat(a); b = parseFloat(b);
+                            switch(op) {
+                                case '+': return (a + b).toString();
+                                case '-': return (a - b).toString();
+                                case '*': return (a * b).toString();
+                                case '/': return (a / b).toString();
+                                default: return '0';
+                            }
+                        }
+                    })();
+                    break;
+
+                case 44: // Age Calculator
+                    document.getElementById('calc-age-btn').addEventListener('click', () => {
+                        const b = document.getElementById('birthdate').value;
+                        if (!b) { alert('Select birthdate'); return; }
+                        const dob = new Date(b);
+                        const now = new Date();
+                        let years = now.getFullYear() - dob.getFullYear();
+                        let months = now.getMonth() - dob.getMonth();
+                        let days = now.getDate() - dob.getDate();
+                        if (days < 0) { months -= 1; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+                        if (months < 0) { years -= 1; months += 12; }
+                        document.getElementById('age-output').textContent = `${years} years, ${months} months, ${days} days`;
+                        document.getElementById('age-result').style.display = 'block';
+                    });
+                    break;
+
+                case 45: // BMI Calculator
+                    document.getElementById('calc-bmi-btn').addEventListener('click', () => {
+                        const w = parseFloat(document.getElementById('bmi-weight').value);
+                        const h = parseFloat(document.getElementById('bmi-height').value);
+                        if (!w || !h) { alert('Enter weight and height'); return; }
+                        const m = h / 100;
+                        const bmi = w / (m*m);
+                        let cat = 'Unknown';
+                        if (bmi < 18.5) cat = 'Underweight';
+                        else if (bmi < 25) cat = 'Normal';
+                        else if (bmi < 30) cat = 'Overweight';
+                        else cat = 'Obese';
+                        document.getElementById('bmi-output').textContent = `BMI: ${bmi.toFixed(2)} (${cat})`;
+                        document.getElementById('bmi-result').style.display = 'block';
+                    });
+                    break;
+
+                case 46: // Percentage
+                    document.getElementById('percent-calc-btn').addEventListener('click', () => {
+                        const base = parseFloat(document.getElementById('percent-base').value);
+                        const part = parseFloat(document.getElementById('percent-part').value);
+                        if (isNaN(base) || isNaN(part)) { alert('Enter numbers'); return; }
+                        const percent = (part / base) * 100;
+                        document.getElementById('percent-output').textContent = `${part} is ${percent.toFixed(2)}% of ${base}`;
+                        document.getElementById('percent-result').style.display = 'block';
+                    });
+                    break;
+
+                case 47: // Loan EMI
+                    document.getElementById('calc-emi-btn').addEventListener('click', () => {
+                        const P = parseFloat(document.getElementById('loan-amount').value);
+                        const r = parseFloat(document.getElementById('loan-rate').value)/100/12;
+                        const n = parseFloat(document.getElementById('loan-tenure').value)*12;
+                        if (!P || isNaN(r) || !n) { alert('Provide loan amount, rate, tenure'); return; }
+                        const emi = (P * r * Math.pow(1+r,n)) / (Math.pow(1+r,n)-1);
+                        document.getElementById('emi-output').innerHTML = `EMI: ${emi.toFixed(2)} per month<br>Total payment: ${(emi*n).toFixed(2)}<br>Total interest: ${((emi*n)-P).toFixed(2)}`;
+                        document.getElementById('emi-result').style.display = 'block';
+                    });
+                    break;
+
+                case 48: // Color Picker
+                    (function() {
+                        const input = document.getElementById('color-input');
+                        const hexEl = document.getElementById('color-hex');
+                        const rgbEl = document.getElementById('color-rgb');
+                        function update() {
+                            const hex = input.value;
+                            hexEl.textContent = hex;
+                            const bigint = parseInt(hex.slice(1),16);
+                            const r = (bigint>>16)&255, g=(bigint>>8)&255, b=bigint&255;
+                            rgbEl.textContent = `${r}, ${g}, ${b}`;
+                        }
+                        input.addEventListener('input', update);
+                        update();
+                    })();
+                    break;
+
+                case 49: // Gradient Generator
+                    document.getElementById('generate-gradient-btn').addEventListener('click', () => {
+                        const c1 = document.getElementById('grad-c1').value;
+                        const c2 = document.getElementById('grad-c2').value;
+                        const dir = document.getElementById('grad-dir').value;
+                        const css = `background: linear-gradient(${dir}, ${c1}, ${c2});`;
+                        const preview = document.getElementById('grad-preview');
+                        preview.style.background = `linear-gradient(${dir}, ${c1}, ${c2})`;
+                        document.getElementById('grad-css').textContent = css;
+                        document.getElementById('grad-result').style.display = 'block';
+                        document.getElementById('copy-grad-css').onclick = () => copyToClipboard(css).then(()=>alert('Copied CSS'));
+                    });
+                    break;
+
+                case 50: // Lorem Ipsum
+                    document.getElementById('generate-lorem-btn').addEventListener('click', () => {
+                        const paras = Math.max(1, Math.min(20, parseInt(document.getElementById('lorem-paras').value || '3',10)));
+                        const base = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.";
+                        const out = Array.from({length:paras}, ()=>base).join('\n\n');
+                        document.getElementById('lorem-output').value = out;
+                        document.getElementById('lorem-result').style.display = 'block';
+                        document.getElementById('copy-lorem').onclick = () => copyToClipboard(out).then(()=>alert('Copied'));
+                    });
+                    break;
+
+                default:
+                    // No-op for other tools
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
